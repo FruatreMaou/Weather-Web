@@ -98,6 +98,19 @@ const getWindDirection = (degrees: number) => {
   return directions[Math.round(degrees / 45) % 8];
 };
 
+function WeatherMark({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 48 48" fill="none" className={className} aria-hidden="true">
+      <path d="M12 21a12 12 0 0 1 24 0" stroke="#F5B544" strokeWidth="5.5" strokeLinecap="round" />
+      <path d="M7 25h17c4 0 5.5-4 10.5-4 2.7 0 4.8 1.2 6.5 3" stroke="#175BBA" strokeWidth="4.3" strokeLinecap="round" />
+      <path d="M7 32h23c3.2 0 5.3-1 7.8-3.4" stroke="#175BBA" strokeWidth="4.3" strokeLinecap="round" />
+      <path d="M13 39h18" stroke="#175BBA" strokeWidth="4.3" strokeLinecap="round" />
+      <circle cx="24" cy="16" r="2.5" fill="#175BBA" />
+    </svg>
+  );
+}
+
+
 export default function Home() {
   const [place, setPlace] = useState<Place>(DEFAULT_PLACE);
   const [forecast, setForecast] = useState<Forecast | null>(null);
@@ -192,7 +205,7 @@ export default function Home() {
       <header className="relative z-30 border-b border-[#ccd9e8]/80 bg-[#f7f5ed]/90 backdrop-blur-xl">
         <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-4 px-5 py-4 sm:px-8 lg:px-12">
           <a className="flex items-center gap-3" href="#utama" aria-label="CuacaKita beranda">
-            <img src="/manus-storage/cuacakita-mark_66d5b412.png" alt="Simbol CuacaKita" className="h-11 w-11 rounded-[14px] shadow-[0_5px_14px_rgba(23,91,186,.16)]" />
+            <span className="flex h-11 w-11 items-center justify-center rounded-[14px] bg-[#fffdf6] p-1.5 shadow-[0_5px_14px_rgba(23,91,186,.16)]"><WeatherMark className="h-full w-full" /></span>
             <div className="leading-none">
               <span className="block text-lg font-extrabold tracking-[-0.06em] text-[#175bba]">CuacaKita</span>
               <span className="mt-1 block text-[9px] font-extrabold uppercase tracking-[0.19em] text-[#6180a7]">Lembar observasi</span>
@@ -266,7 +279,8 @@ export default function Home() {
             {error && <p className="mb-4 rounded-xl border border-[#efcfc5] bg-[#fff3ef] px-4 py-3 text-sm font-semibold text-[#9d4638]">{error}</p>}
 
             <section className="paper-grain relative overflow-hidden rounded-[28px] border border-[#c8d9ea] bg-[#e7f0fa] shadow-[0_20px_45px_rgba(31,72,123,.13)]">
-              <img src="/manus-storage/cuacakita-hero-atlas_f5191a2a.jpg" alt="Ilustrasi atmosfer observatorium" className="absolute inset-0 h-full w-full object-cover object-right opacity-[0.88]" />
+              <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle_at_82%_28%,rgba(255,211,100,.95),rgba(255,211,100,.38)_10%,transparent_28%),radial-gradient(circle_at_74%_78%,rgba(255,255,255,.84),transparent_31%),linear-gradient(135deg,#d9ecfa_0%,#b9d7ed_47%,#719fc6_100%)]" />
+              <div aria-hidden="true" className="absolute -bottom-20 right-8 h-72 w-[62%] rounded-[48%] bg-white/35 blur-3xl" />
               <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(247,245,237,.94)_0%,rgba(247,245,237,.72)_42%,rgba(247,245,237,.18)_78%)]" />
               <svg className="drift-slow pointer-events-none absolute -right-12 top-4 h-[120%] w-[80%] text-white/70" viewBox="0 0 660 420" aria-hidden="true">
                 <path className="isobar-line" d="M30 285C175 176 227 314 350 208S538 155 652 238" />
@@ -317,7 +331,9 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="hidden overflow-hidden rounded-2xl border border-white/70 bg-[#fffdf6]/72 lg:block">
-                    <img src={isDay ? "/manus-storage/cuacakita-sunbreak_6e04b55b.jpg" : "/manus-storage/cuacakita-monsoon_73805917.jpg"} alt="Ilustrasi kondisi langit" className="h-[126px] w-full object-cover" />
+                    <div aria-label="Ilustrasi kondisi langit" className={`relative flex h-[126px] items-center justify-center overflow-hidden ${isDay ? "bg-[radial-gradient(circle_at_70%_26%,#ffd267_0,rgba(255,210,103,.65)_15%,transparent_16%),linear-gradient(135deg,#e8f5fb,#9fc6e2)]" : "bg-[radial-gradient(circle_at_70%_75%,#f7c25a_0,rgba(247,194,90,.3)_13%,transparent_14%),linear-gradient(135deg,#819dba,#243e68)]"}`}>
+                      {isDay ? <Sun className="h-14 w-14 text-[#e9a82e] opacity-80" /> : <CloudRain className="h-14 w-14 text-white/85" />}
+                    </div>
                   </div>
                 </div>
               </div>
